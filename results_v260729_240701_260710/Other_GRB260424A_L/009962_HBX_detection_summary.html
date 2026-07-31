@@ -1,0 +1,240 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/nouislider@15.8.1/dist/nouislider.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/nouislider@15.8.1/dist/nouislider.min.js"></script>
+
+<style>
+body{font-family:Arial}
+
+.controls{
+    width:800px;
+    margin:auto;
+}
+
+input[type=range]{
+    width:100%;
+}
+
+#plot{
+    width:800px;
+    margin:auto;
+}
+
+#dtSlider{
+    margin:25px 10px;
+}
+
+.noUi-tooltip{
+    font-size:11px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="controls">
+
+<b>max_iSNR ≥ <span id="snrValue"></span></b>
+
+<input id="snrSlider"
+       type="range"
+       min="0"
+       max="60"
+       value="0">
+
+<br><br>
+
+<b>count ≥ <span id="countValue"></span></b>
+
+<input id="countSlider"
+       type="range"
+       min="0"
+       max="9"
+       value="0">
+
+<br><br>
+
+<b>dt range:
+<span id="dtMin"></span>
+–
+<span id="dtMax"></span> s
+</b>
+
+<div id="dtSlider"></div>
+
+</div>
+
+<div style="height:920px; width:800px;">                        <script>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.7.0.min.js" integrity="sha256-jvTGqxNp8AGWEcvNLVuKr+8j5dGe9Yw51LQkmDH+IYA=" crossorigin="anonymous"></script>                <div id="plot" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("plot")) {                    Plotly.newPlot(                        "plot",                        [{"fill":"toself","fillcolor":"rgba(255,99,71,0.4)","hoverinfo":"skip","line":{"color":"red","width":2},"mode":"lines","showlegend":false,"x":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"y":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"type":"scatter"},{"customdata":[],"hovertemplate":"\u003cb\u003ez_src\u003c\u002fb\u003e: %{x}\u003cbr\u003e\u003cb\u003ey_src\u003c\u002fb\u003e: %{y}\u003cbr\u003e\u003cb\u003eindex\u003c\u002fb\u003e: %{customdata[1]}\u003cbr\u003e\u003cb\u003emax_iSNR\u003c\u002fb\u003e: %{customdata[2]}\u003cbr\u003e\u003cb\u003ey_error\u003c\u002fb\u003e: %{customdata[3]}\u003cbr\u003e\u003cb\u003ez_error\u003c\u002fb\u003e: %{customdata[4]}\u003cbr\u003e\u003cb\u003era\u003c\u002fb\u003e: %{customdata[5]}\u003cbr\u003e\u003cb\u003edec\u003c\u002fb\u003e: %{customdata[6]}\u003cbr\u003e\u003cb\u003era_err\u003c\u002fb\u003e: %{customdata[7]}\u003cbr\u003e\u003cb\u003edec_err\u003c\u002fb\u003e: %{customdata[8]}\u003cbr\u003e\u003cb\u003etstart_ut\u003c\u002fb\u003e: %{customdata[9]}\u003cbr\u003e\u003cb\u003edt\u003c\u002fb\u003e: %{customdata[10]}\u003cbr\u003e\u003cb\u003etscale_maxiSNR\u003c\u002fb\u003e: %{customdata[11]}\u003cbr\u003e\u003cb\u003eEband_maxiSNR\u003c\u002fb\u003e: %{customdata[12]}\u003cbr\u003e\u003cb\u003ecount\u003c\u002fb\u003e: %{customdata[13]}\u003cbr\u003e\u003cextra\u003e\u003c\u002fextra\u003e","marker":{"size":8},"mode":"markers","showlegend":false,"x":[],"y":[],"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"width":800,"height":920,"title":{"text":"Time: 2026-04-24T00:22:01+12.6, [-100.1, 600.1], Pos: nan, nan (nan)"},"xaxis":{"title":{"text":"Zpix"},"range":[0,200]},"yaxis":{"title":{"text":"Ypix"},"range":[0,200],"scaleanchor":"x","scaleratio":1}},                        {"responsive": true}                    )                };            </script>        </div>
+
+<script>
+
+const data=[{"x": 136.87773303543966, "y": 154.05519197745087, "snr": 5.389584818837347, "count": 1, "dt": -97.53957617153918, "custom": ["009962_HBX_detection_0.html", 0, 5.389584818837347, 0.1119651472519013, 0.1922070115497311, 169.69293169810754, 53.540507211296, 0.134666744748275, 0.0565536626335206, "2026-04-24T00:20:23.460", -97.53957617153918, 2.56, "[8.0, 120.0]", 1]}, {"x": 103.16894789248286, "y": 152.9874075002333, "snr": 5.70062211978425, "count": 2, "dt": -74.49957654403096, "custom": ["009962_HBX_detection_1.html", 1, 5.70062211978425, 0.1186654450156755, 0.1105653616902102, 188.42240591038777, 43.23424594528564, 0.0742118395311272, 0.0530249094868261, "2026-04-24T00:20:46.500", -74.49957654403096, 10.24, "[4.0, 8.0]", 2]}, {"x": 190.4213760957804, "y": 5.4822421397040415, "snr": 5.588005906558019, "count": 2, "dt": 34.3004236178329, "custom": ["009962_HBX_detection_2.html", 2, 5.588005906558019, 145.13082594315108, 0.5764951501688318, 118.2055582738334, 4.3125050984810525, 15.20176350347498, 53.74048739188225, "2026-04-24T00:22:35.300", 34.3004236178329, 2.56, "[4.0, 8.0]", 2]}, {"x": 111.01044116882248, "y": 177.00693097780908, "snr": 5.449961472614316, "count": 1, "dt": 42.62042350078428, "custom": ["009962_HBX_detection_3.html", 3, 5.449961472614316, 0.2033553069466207, 0.1297050278601311, 195.45636906821116, 52.117537859921626, 0.11224597001545, 0.0610753107895069, "2026-04-24T00:22:43.620", 42.62042350078428, 2.56, "[8.0, 50.0]", 1]}, {"x": 192.70005970887487, "y": 6.106149775486903, "snr": 8.104613066238134, "count": 5, "dt": 195.58042352496142, "custom": ["009962_HBX_detection_4.html", 4, 8.104613066238134, 0.1600382544719593, 0.3180361712404863, 117.70926891702054, 4.877326628207874, 0.0732673226055182, 0.0701611406216377, "2026-04-24T00:25:16.580", 195.58042352496142, 2.56, "[4.0, 8.0]", 5]}, {"x": 49.346480731489294, "y": 149.18758248866374, "snr": 5.100921183148935, "count": 1, "dt": 77.82042368257845, "custom": ["009962_HBX_detection_5.html", 5, 5.100921183148935, 0.1391520061044558, 0.1481063235746768, 206.61233249188692, 22.337707610958745, 0.0588305979521001, 0.0666920313100741, "2026-04-24T00:23:18.820", 77.82042368257845, 5.12, "[8.0, 120.0]", 1]}, {"x": 193.0356493928431, "y": 192.1357348485919, "snr": 6.999490099308795, "count": 1, "dt": 114.94042388571853, "custom": ["009962_HBX_detection_6.html", 6, 6.999490099308795, 3.295597880615796, 0.2783186011913036, 144.12616484202633, 70.5183541471855, 1.4124675901015813, 0.8093063317752018, "2026-04-24T00:23:55.940", 114.94042388571853, 2.56, "[4.0, 8.0]", 1]}, {"x": 35.99105671784077, "y": 9.579322301141929, "snr": 5.25624190817212, "count": 1, "dt": 119.42042372597808, "custom": ["009962_HBX_detection_7.html", 7, 5.25624190817212, 0.1034602625451406, 0.2181414744844586, 169.43355857239197, -26.84676381250192, 0.0809513594567703, 0.0394469887306318, "2026-04-24T00:24:00.420", 119.42042372597808, 5.12, "[8.0, 50.0]", 1]}, {"x": 9.10870210397388, "y": 190.82132019678969, "snr": 11.45446151994383, "count": 1, "dt": 126.46042401379401, "custom": ["009962_HBX_detection_8.html", 8, 11.45446151994383, 0.5989945637842896, 0.1695712863353463, 224.64242615719755, 20.51117152594631, 0.1263002495348374, 0.1358089828677082, "2026-04-24T00:24:07.460", 126.46042401379401, 2.56, "[4.0, 8.0]", 1]}, {"x": 166.89739535095947, "y": 136.03045909514353, "snr": 5.190154153450719, "count": 1, "dt": 134.14042347053493, "custom": ["009962_HBX_detection_9.html", 9, 5.190154153450719, 0.1252402002603958, 0.2939269668832428, 143.57259259491505, 51.62460847249955, 0.1784782065816943, 0.0552569960338994, "2026-04-24T00:24:15.140", 134.14042347053493, 1.28, "[4.0, 8.0]", 1]}, {"x": 14.121687832235276, "y": 92.25398665666722, "snr": 5.286414926348304, "count": 1, "dt": 139.26042373700494, "custom": ["009962_HBX_detection_10.html", 10, 5.286414926348304, 0.1806348608741688, 0.1396861885705003, 199.18612662884595, -6.779854983044062, 0.0624196854605876, 0.0662070049673265, "2026-04-24T00:24:20.260", 139.26042373700494, 2.56, "[4.0, 20.0]", 1]}, {"x": 115.54723886012668, "y": 27.073267732562694, "snr": 5.046162462143726, "count": 1, "dt": 156.54042392911816, "custom": ["009962_HBX_detection_11.html", 11, 5.046162462143726, 0.169788411244611, 0.0902396460120448, 143.31612140997956, -5.120277312592727, 0.0456432025219234, 0.0602655922672834, "2026-04-24T00:24:37.540", 156.54042392911816, 0.64, "[4.0, 8.0]", 1]}, {"x": 42.78557038752277, "y": 109.22306074191349, "snr": 5.1487749862305465, "count": 1, "dt": 178.30042396149094, "custom": ["009962_HBX_detection_12.html", 12, 5.1487749862305465, 0.1504870076921239, 0.1545121091026996, 195.87662031915335, 6.301141099147823, 0.0684174650976065, 0.0722663913718472, "2026-04-24T00:24:59.300", 178.30042396149094, 5.12, "[4.0, 20.0]", 1]}, {"x": 16.628104346219967, "y": 154.64775618215674, "snr": 5.428660652437769, "count": 1, "dt": 182.14042400418276, "custom": ["009962_HBX_detection_13.html", 13, 5.428660652437769, 0.2073935720236645, 0.0943775056361892, 215.2728630871445, 13.688834457084582, 0.0543885770135337, 0.0638352595214919, "2026-04-24T00:25:03.140", 182.14042400418276, 2.56, "[4.0, 20.0]", 1]}, {"x": 190.0759979284529, "y": 27.79346478657492, "snr": 5.1405311665551405, "count": 1, "dt": 196.22042395117188, "custom": ["009962_HBX_detection_14.html", 14, 5.1405311665551405, 0.110205939902568, 0.1628916073714473, 119.47509266167796, 11.017031829116805, 0.0424735065112929, 0.0443892179505574, "2026-04-24T00:25:17.220", 196.22042395117188, 2.56, "[8.0, 50.0]", 1]}, {"x": 7.161311339498024, "y": 191.3167488236115, "snr": 7.697659804376174, "count": 1, "dt": 220.5404238024583, "custom": ["009962_HBX_detection_15.html", 15, 7.697659804376174, 0.2743846175037296, 0.2127859359758226, 224.96204273873715, 20.08972865740549, 0.0611017578550603, 0.0818002774122269, "2026-04-24T00:25:41.540", 220.5404238024583, 2.56, "[4.0, 8.0]", 1]}, {"x": 144.5003884099786, "y": 157.10558375579782, "snr": 5.076228764431774, "count": 2, "dt": 223.10042362137193, "custom": ["009962_HBX_detection_16.html", 16, 5.076228764431774, 0.1135968967477761, 0.2089024704981427, 166.0257850701685, 56.11834359101008, 0.1508882636963959, 0.0539639093393878, "2026-04-24T00:25:44.100", 223.10042362137193, 0.64, "[8.0, 50.0]", 2]}, {"x": 52.108650102827845, "y": 104.58470220487378, "snr": 5.482556848123965, "count": 2, "dt": 539.9004240002339, "custom": ["009962_HBX_detection_17.html", 17, 5.482556848123965, 0.1523101083250516, 0.1569148902825102, 191.25160484351744, 7.301804799630631, 0.0746917319510541, 0.0765649917753843, "2026-04-24T00:31:00.900", 539.9004240002339, 5.12, "[4.0, 8.0]", 2]}, {"x": 189.49525972840647, "y": 6.435771713453152, "snr": 10.865910685556436, "count": 1, "dt": 250.62042371778244, "custom": ["009962_HBX_detection_18.html", 18, 10.865910685556436, 0.2474527058062915, 0.1843907519275945, 118.4683213597025, 4.422487712067131, 0.0449188469906553, 0.0771063263162628, "2026-04-24T00:26:11.620", 250.62042371778244, 2.56, "[4.0, 8.0]", 1]}, {"x": 160.4474442084835, "y": 130.3435565864286, "snr": 5.128216324661558, "count": 1, "dt": 263.4204234409934, "custom": ["009962_HBX_detection_19.html", 19, 5.128216324661558, 0.1000159340863263, 0.1762158125726562, 145.74722367292628, 48.70136368047424, 0.1073705937699646, 0.0454683882542737, "2026-04-24T00:26:24.420", 263.4204234409934, 2.56, "[8.0, 50.0]", 1]}, {"x": 79.97801937126522, "y": 29.897055820287136, "snr": 5.156088218828425, "count": 1, "dt": 280.7004236331066, "custom": ["009962_HBX_detection_20.html", 20, 5.156088218828425, 0.1495438606169244, 0.2811130743193166, 157.84104016295507, -13.088062731103395, 0.1175383910514956, 0.0809272714529249, "2026-04-24T00:26:41.700", 280.7004236331066, 1.28, "[8.0, 50.0]", 1]}, {"x": 179.37146408263854, "y": 91.15903794791484, "snr": 5.450302073490833, "count": 1, "dt": 306.3004237081712, "custom": ["009962_HBX_detection_21.html", 21, 5.450302073490833, 0.1449293391765934, 0.1313936629591423, 128.55229754762914, 33.87279219348147, 0.0557826043127038, 0.0632460689511092, "2026-04-24T00:27:07.300", 306.3004237081712, 1.28, "[8.0, 120.0]", 1]}, {"x": 190.93219246069947, "y": 184.874010263853, "snr": 5.845576580398981, "count": 1, "dt": 313.98042379355485, "custom": ["009962_HBX_detection_22.html", 22, 5.845576580398981, 0.2504377088104176, 0.2460310065013088, 143.0036127328414, 68.62703748381934, 0.218170330283817, 0.0667488700261716, "2026-04-24T00:27:14.980", 313.98042379355485, 2.56, "[4.0, 8.0]", 1]}, {"x": 112.60241744054588, "y": 5.856598424003432, "snr": 5.159077669831476, "count": 1, "dt": 317.8204238362467, "custom": ["009962_HBX_detection_23.html", 23, 5.159077669831476, 0.1028466386033827, 0.1783418511793059, 140.82948877100398, -12.12552977875482, 0.0635009005326084, 0.0501992385256569, "2026-04-24T00:27:18.820", 317.8204238362467, 5.12, "[8.0, 120.0]", 1]}, {"x": 96.74870533374582, "y": 54.34918252756498, "snr": 5.218954553368124, "count": 1, "dt": 318.4604236338144, "custom": ["009962_HBX_detection_24.html", 24, 5.218954553368124, 0.1389308461335245, 0.1508185712617728, 156.93209709167002, -0.1841652444962734, 0.0746921723454133, 0.0691135873149494, "2026-04-24T00:27:19.460", 318.4604236338144, 2.56, "[4.0, 8.0]", 1]}, {"x": 114.31655507521262, "y": 145.76046791509225, "snr": 5.739576490436555, "count": 2, "dt": 337.0204240497058, "custom": ["009962_HBX_detection_25.html", 25, 5.739576490436555, 0.1409820237745222, 0.1296720360364318, 179.48742341119203, 44.62397224447407, 0.0943086733209289, 0.0630264620069627, "2026-04-24T00:27:38.020", 337.0204240497058, 0.64, "[8.0, 120.0]", 2]}, {"x": 172.99002226789747, "y": 148.18731325994872, "snr": 5.694934157013065, "count": 2, "dt": 353.66042381560857, "custom": ["009962_HBX_detection_26.html", 26, 5.694934157013065, 0.1265986725103484, 0.3976528225929134, 143.3895214807796, 56.63525027373729, 0.2553270174803546, 0.0514715621296322, "2026-04-24T00:27:54.660", 353.66042381560857, 5.12, "[4.0, 8.0]", 2]}, {"x": 19.788748579060425, "y": 84.61822133759681, "snr": 5.36442321142804, "count": 1, "dt": 354.94042403938676, "custom": ["009962_HBX_detection_27.html", 27, 5.36442321142804, 0.0907325510674568, 0.4915532381308155, 195.46261211231496, -8.191258259468514, 0.1447219699197308, 0.1037388784192783, "2026-04-24T00:27:55.940", 354.94042403938676, 5.12, "[8.0, 50.0]", 1]}, {"x": 37.92861151458477, "y": 119.96443817919672, "snr": 5.50536563157328, "count": 1, "dt": 356.2204236345222, "custom": ["009962_HBX_detection_28.html", 28, 5.50536563157328, 0.1548436497322178, 0.1423030064748806, 200.69305898680932, 8.808689763712547, 0.0626131366240956, 0.0695388380849276, "2026-04-24T00:27:57.220", 356.2204236345222, 2.56, "[8.0, 120.0]", 1]}, {"x": 95.09160506940204, "y": 70.08637962854878, "snr": 5.5140379717658, "count": 3, "dt": 377.980423666895, "custom": ["009962_HBX_detection_29.html", 29, 5.5140379717658, 0.1436941652175068, 0.1339961794247714, 161.97709381159393, 5.885429922711556, 0.0739843607112458, 0.0738119020993429, "2026-04-24T00:28:18.980", 377.980423666895, 2.56, "[8.0, 50.0]", 3]}, {"x": 42.13105674754125, "y": 65.83109905973461, "snr": 5.531601890127436, "count": 3, "dt": 422.7804239554187, "custom": ["009962_HBX_detection_30.html", 30, 5.531601890127436, 0.0944590017777724, 0.1976301743479473, 182.6392309155763, -9.937031951845954, 0.0767322025450504, 0.0543513069517305, "2026-04-24T00:29:03.780", 422.7804239554187, 10.24, "[8.0, 120.0]", 3]}, {"x": 192.52133742044256, "y": 7.377662064082018, "snr": 12.247961628207245, "count": 1, "dt": 455.4204236896565, "custom": ["009962_HBX_detection_31.html", 31, 12.247961628207245, 0.1559800878782481, 0.4681302029238507, 117.80974829210552, 5.206833774933094, 0.1082117910178126, 0.0905366849371737, "2026-04-24T00:29:36.420", 455.4204236896565, 2.56, "[4.0, 8.0]", 1]}, {"x": 7.997384099502758, "y": 128.27478459828177, "snr": 5.587778526980622, "count": 1, "dt": 457.3404237110024, "custom": ["009962_HBX_detection_32.html", 32, 5.587778526980622, 0.1447013156156081, 0.0878868118060503, 210.24982730962768, 3.589270734846053, 0.0408331061729562, 0.0495926015050039, "2026-04-24T00:29:38.340", 457.3404237110024, 2.56, "[4.0, 8.0]", 1]}, {"x": 59.870758410359606, "y": 69.82688041371054, "snr": 5.194758239938284, "count": 1, "dt": 465.02042379638607, "custom": ["009962_HBX_detection_33.html", 33, 5.194758239938284, 0.1262006337580979, 0.1629980682943947, 177.1112590588002, -4.216106607681233, 0.0759377734797902, 0.0642988472682789, "2026-04-24T00:29:46.020", 465.02042379638607, 2.56, "[4.0, 8.0]", 1]}, {"x": 186.63531901587007, "y": 12.4051863228901, "snr": 5.228830058506686, "count": 1, "dt": 497.02042373305613, "custom": ["009962_HBX_detection_34.html", 34, 5.228830058506686, 0.096158639027289, 0.6580599982878463, 119.46718839807684, 5.6558824923836815, 0.1610790145889399, 0.1179555243836841, "2026-04-24T00:30:18.020", 497.02042373305613, 2.56, "[4.0, 8.0]", 1]}, {"x": 31.09170454570701, "y": 35.10041471069927, "snr": 5.197819006991282, "count": 1, "dt": 530.3004238935043, "custom": ["009962_HBX_detection_35.html", 35, 5.197819006991282, 0.1637837581095476, 0.1394918397517473, 177.78909708087824, -21.45523256769949, 0.0659141365853435, 0.0491719406608652, "2026-04-24T00:30:51.300", 530.3004238935043, 2.56, "[4.0, 8.0]", 1]}, {"x": 148.1492249032724, "y": 34.86675986588092, "snr": 5.018406073430887, "count": 1, "dt": 550.7804237020989, "custom": ["009962_HBX_detection_36.html", 36, 5.018406073430887, 0.1620064888546243, 0.1356590220342478, 132.71156458195242, 5.438807626156997, 0.051128186264281, 0.0658878282013235, "2026-04-24T00:31:11.780", 550.7804237020989, 0.64, "[4.0, 20.0]", 1]}, {"x": 89.85803815519004, "y": 89.71295395688252, "snr": 5.015608467374328, "count": 1, "dt": 582.1404238412013, "custom": ["009962_HBX_detection_37.html", 37, 5.015608467374328, 0.1121066769816796, 0.1454607327738742, 170.51902190385016, 13.032554373541045, 0.0775397429875113, 0.0688603168353631, "2026-04-24T00:31:43.140", 582.1404238412013, 1.28, "[8.0, 120.0]", 1]}, {"x": 104.79602215559588, "y": 127.04839238101786, "snr": 5.307972720810227, "count": 1, "dt": 583.4204234363367, "custom": ["009962_HBX_detection_38.html", 38, 5.307972720810227, 0.1246681943043955, 0.1359981026673923, 176.75281773442762, 34.5076331407897, 0.0861764052505079, 0.0680124575838031, "2026-04-24T00:31:44.420", 583.4204234363367, 0.64, "[4.0, 8.0]", 1]}, {"x": 111.68986908933778, "y": 132.10355947103446, "snr": 5.116581323842624, "count": 1, "dt": 584.0604238625472, "custom": ["009962_HBX_detection_39.html", 39, 5.116581323842624, 0.3275482856270205, 0.1125248523326184, 175.14034416972163, 38.77485052997207, 0.1472819371247219, 0.1334430501896305, "2026-04-24T00:31:45.060", 584.0604238625472, 5.12, "[4.0, 20.0]", 1]}];
+
+const snrLevels=[4.0, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 6.0, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8, 6.9, 7.0, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.9, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 9.0, 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9, 10.0];
+
+const countLevels=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+const dtMinAllowed=-100.10000026226044;
+
+const dtMaxAllowed=600.0999997854233;
+
+const gd=document.getElementById("plot");
+
+let snrIndex=0;
+let countIndex=0;
+
+let dtRange=[dtMinAllowed,dtMaxAllowed];
+
+const dtSlider=document.getElementById("dtSlider");
+
+noUiSlider.create(dtSlider,{
+    start:[dtMinAllowed,dtMaxAllowed],
+    connect:true,
+    step:0.1,
+    range:{
+        min:dtMinAllowed,
+        max:dtMaxAllowed
+    },
+    tooltips:[true,true],
+    format:{
+        to:function(v){return Number(v).toFixed(1);},
+        from:function(v){return Number(v);}
+    }
+});
+
+dtSlider.style.position="relative";
+
+function addMarker(value,color,label){
+
+    if(value<dtMinAllowed || value>dtMaxAllowed)
+        return;
+
+    const pct=
+        100*(value-dtMinAllowed)/(dtMaxAllowed-dtMinAllowed);
+
+    const line=document.createElement("div");
+
+    line.style.position="absolute";
+    line.style.left=pct+"%";
+    line.style.top="-10px";
+    line.style.bottom="-10px";
+    line.style.width="2px";
+    line.style.background=color;
+    line.style.pointerEvents="none";
+
+    const text=document.createElement("div");
+
+    text.innerHTML=label;
+
+    text.style.position="absolute";
+    text.style.top="-18px";
+    text.style.left="50%";
+    text.style.transform="translateX(-50%)";
+    text.style.fontSize="10px";
+    text.style.whiteSpace="nowrap";
+
+    line.appendChild(text);
+
+    dtSlider.appendChild(line);
+}
+
+addMarker(0,"red","0");
+
+addMarker(12.6,"blue","max SNR");
+
+function updatePlot(){
+
+    document.getElementById("snrValue").textContent=
+        snrLevels[snrIndex].toFixed(1);
+
+    document.getElementById("countValue").textContent=
+        countLevels[countIndex];
+
+    document.getElementById("dtMin").textContent=
+        dtRange[0].toFixed(1);
+
+    document.getElementById("dtMax").textContent=
+        dtRange[1].toFixed(1);
+
+    const x=[];
+    const y=[];
+    const custom=[];
+
+    for(const p of data){
+
+        if(
+            p.snr>=snrLevels[snrIndex] &&
+            p.count>=countLevels[countIndex] &&
+            p.dt>=dtRange[0] &&
+            p.dt<=dtRange[1]
+        ){
+
+            x.push(p.x);
+            y.push(p.y);
+            custom.push(p.custom);
+
+        }
+
+    }
+
+    Plotly.restyle(
+        gd,
+        {
+            x:[x],
+            y:[y],
+            customdata:[custom]
+        },
+        [1]
+    );
+
+}
+
+document.getElementById("snrSlider").oninput=function(){
+    snrIndex=parseInt(this.value);
+    updatePlot();
+};
+
+document.getElementById("countSlider").oninput=function(){
+    countIndex=parseInt(this.value);
+    updatePlot();
+};
+
+dtSlider.noUiSlider.on("update",function(values){
+
+    dtRange=[
+        parseFloat(values[0]),
+        parseFloat(values[1])
+    ];
+
+    updatePlot();
+
+});
+
+gd.on("plotly_click",function(d){
+
+    if(d.points.length &&
+       d.points[0].curveNumber===1){
+
+        window.open(
+            d.points[0].customdata[0],
+            "_blank"
+        );
+
+    }
+
+});
+
+updatePlot();
+
+</script>
+
+</body>
+</html>
