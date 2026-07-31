@@ -1,0 +1,240 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/nouislider@15.8.1/dist/nouislider.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/nouislider@15.8.1/dist/nouislider.min.js"></script>
+
+<style>
+body{font-family:Arial}
+
+.controls{
+    width:800px;
+    margin:auto;
+}
+
+input[type=range]{
+    width:100%;
+}
+
+#plot{
+    width:800px;
+    margin:auto;
+}
+
+#dtSlider{
+    margin:25px 10px;
+}
+
+.noUi-tooltip{
+    font-size:11px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="controls">
+
+<b>max_iSNR ≥ <span id="snrValue"></span></b>
+
+<input id="snrSlider"
+       type="range"
+       min="0"
+       max="60"
+       value="0">
+
+<br><br>
+
+<b>count ≥ <span id="countValue"></span></b>
+
+<input id="countSlider"
+       type="range"
+       min="0"
+       max="9"
+       value="0">
+
+<br><br>
+
+<b>dt range:
+<span id="dtMin"></span>
+–
+<span id="dtMax"></span> s
+</b>
+
+<div id="dtSlider"></div>
+
+</div>
+
+<div style="height:920px; width:800px;">                        <script>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.7.0.min.js" integrity="sha256-jvTGqxNp8AGWEcvNLVuKr+8j5dGe9Yw51LQkmDH+IYA=" crossorigin="anonymous"></script>                <div id="plot" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("plot")) {                    Plotly.newPlot(                        "plot",                        [{"fill":"toself","fillcolor":"rgba(255,99,71,0.4)","hoverinfo":"skip","line":{"color":"red","width":2},"mode":"lines","showlegend":false,"x":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"y":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"type":"scatter"},{"customdata":[],"hovertemplate":"\u003cb\u003ez_src\u003c\u002fb\u003e: %{x}\u003cbr\u003e\u003cb\u003ey_src\u003c\u002fb\u003e: %{y}\u003cbr\u003e\u003cb\u003eindex\u003c\u002fb\u003e: %{customdata[1]}\u003cbr\u003e\u003cb\u003emax_iSNR\u003c\u002fb\u003e: %{customdata[2]}\u003cbr\u003e\u003cb\u003ey_error\u003c\u002fb\u003e: %{customdata[3]}\u003cbr\u003e\u003cb\u003ez_error\u003c\u002fb\u003e: %{customdata[4]}\u003cbr\u003e\u003cb\u003era\u003c\u002fb\u003e: %{customdata[5]}\u003cbr\u003e\u003cb\u003edec\u003c\u002fb\u003e: %{customdata[6]}\u003cbr\u003e\u003cb\u003era_err\u003c\u002fb\u003e: %{customdata[7]}\u003cbr\u003e\u003cb\u003edec_err\u003c\u002fb\u003e: %{customdata[8]}\u003cbr\u003e\u003cb\u003etstart_ut\u003c\u002fb\u003e: %{customdata[9]}\u003cbr\u003e\u003cb\u003edt\u003c\u002fb\u003e: %{customdata[10]}\u003cbr\u003e\u003cb\u003etscale_maxiSNR\u003c\u002fb\u003e: %{customdata[11]}\u003cbr\u003e\u003cb\u003eEband_maxiSNR\u003c\u002fb\u003e: %{customdata[12]}\u003cbr\u003e\u003cb\u003ecount\u003c\u002fb\u003e: %{customdata[13]}\u003cbr\u003e\u003cextra\u003e\u003c\u002fextra\u003e","marker":{"size":8},"mode":"markers","showlegend":false,"x":[],"y":[],"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"width":800,"height":920,"title":{"text":"Time: 2025-11-06T18:14:42+1.02, [-2.1, 8.1], Pos: nan, nan (nan)"},"xaxis":{"title":{"text":"Zpix"},"range":[0,200]},"yaxis":{"title":{"text":"Ypix"},"range":[0,200],"scaleanchor":"x","scaleratio":1}},                        {"responsive": true}                    )                };            </script>        </div>
+
+<script>
+
+const data=[{"x": 3.249803525663893, "y": 188.47651995216117, "snr": 136.57477640373966, "count": 15, "dt": 6.500033620165269, "custom": ["007461_SYC_detection_0.html", 0, 136.57477640373966, 5890.943878017743, 0.6950164015443661, 86.66846173360864, 23.398716258365244, 38.30214668648258, 41.71893932190783, "2025-11-06T18:14:48.500", 6.500033620165269, 0.64, "[4.0, 20.0]", 15]}, {"x": 7.21778745602937, "y": 5.628804212708517, "snr": 133.42083651830328, "count": 41, "dt": -1.87996644025894, "custom": ["007461_SYC_detection_1.html", 1, 133.42083651830328, 0.4464931086256251, 0.1542768497721675, 5.313241660804339, 49.62791806674954, 0.1983194822162012, 0.0422633937082153, "2025-11-06T18:14:40.120", -1.87996644025894, 0.32, "[8.0, 50.0]", 41]}, {"x": 191.49463861699448, "y": 187.5861337857712, "snr": 11.761814928996872, "count": 2, "dt": 4.4600338725164335, "custom": ["007461_SYC_detection_2.html", 2, 11.761814928996872, 0.1995429358039217, 0.2701524020242206, 163.98451088409195, 24.288189581268306, 0.0929328393490729, 0.0485031785945401, "2025-11-06T18:14:46.460", 4.4600338725164335, 0.32, "[4.0, 20.0]", 2]}, {"x": 4.509908124294036, "y": 188.6392492607237, "snr": 11.26111747986378, "count": 1, "dt": -1.5599665414750774, "custom": ["007461_SYC_detection_3.html", 3, 11.26111747986378, 0.2059128661835124, 43.15355646231036, 87.07449595628728, 23.476622106695334, 15.11893885206187, 3.643632604127612, "2025-11-06T18:14:40.440", -1.5599665414750774, 0.64, "[4.0, 8.0]", 1]}, {"x": 11.482527110207032, "y": 5.320067600819229, "snr": 146.95046156972796, "count": 9, "dt": 6.080033635140936, "custom": ["007461_SYC_detection_4.html", 4, 146.95046156972796, 0.2636971597921145, 0.1178098757583034, 3.980658621520591, 50.589649030755, 0.1215415770406608, 0.0317004467056995, "2025-11-06T18:14:48.080", 6.080033635140936, 0.32, "[8.0, 120.0]", 9]}, {"x": 192.13447823435496, "y": 62.05263665126863, "snr": 8.146557875741687, "count": 1, "dt": -0.6599663939535816, "custom": ["007461_SYC_detection_5.html", 5, 8.146557875741687, 0.2139763334223014, 0.2220299462739856, 216.6118357040116, 49.61266404515092, 0.1250925570231234, 0.0697467725531153, "2025-11-06T18:14:41.340", -0.6599663939535816, 0.16, "[4.0, 8.0]", 1]}, {"x": 191.09989683094545, "y": 191.92201004288964, "snr": 16.628439300765862, "count": 7, "dt": -0.2399664089292486, "custom": ["007461_SYC_detection_6.html", 6, 16.628439300765862, 0.197617685921694, 0.2347950009579613, 162.91746967857028, 23.40859787540635, 0.0821735943245651, 0.0453417782564409, "2025-11-06T18:14:41.760", -0.2399664089292486, 0.32, "[4.0, 20.0]", 7]}, {"x": 9.487635176810016, "y": 191.73191717188996, "snr": 218.44739041554195, "count": 19, "dt": 1.420033891105632, "custom": ["007461_SYC_detection_7.html", 7, 218.44739041554195, 0.298299458594252, 81.42722639506283, 89.24547288302199, 23.26101999840129, 32.58190247723553, 5.015743237061558, "2025-11-06T18:14:43.420", 1.420033891105632, 0.64, "[4.0, 8.0]", 19]}, {"x": 4.366750283716991, "y": 188.352104665829, "snr": 236.403856503859, "count": 9, "dt": 5.080034030021707, "custom": ["007461_SYC_detection_8.html", 8, 236.403856503859, 0.2235642778589955, 0.3107733741878857, 86.96788411835934, 23.52329737951349, 0.1044912912954361, 0.0537810229433954, "2025-11-06T18:14:47.080", 5.080034030021707, 1.28, "[8.0, 50.0]", 9]}, {"x": 192.15296666552487, "y": 144.52685199768032, "snr": 5.731306054980504, "count": 1, "dt": -0.17996623145641877, "custom": ["007461_SYC_detection_9.html", 9, 5.731306054980504, 0.234446916208371, 0.1255368739943328, 176.26122852269864, 34.13455569273508, 0.08956538602757, 0.0603995803451399, "2025-11-06T18:14:41.820", -0.17996623145641877, 0.32, "[4.0, 20.0]", 1]}, {"x": 21.636904112355477, "y": 5.745378216707696, "snr": 5.350753873970631, "count": 1, "dt": -0.13996632268877818, "custom": ["007461_SYC_detection_10.html", 10, 5.350753873970631, 0.2184247165849233, 0.2426735393950002, 0.9595452199426228, 53.0078488854652, 0.1317736551385729, 0.0607841481166284, "2025-11-06T18:14:41.860", -0.13996632268877818, 0.32, "[8.0, 50.0]", 1]}, {"x": 192.1338619510028, "y": 150.87749101778084, "snr": 5.572355363451327, "count": 1, "dt": 0.4200336573436658, "custom": ["007461_SYC_detection_11.html", 11, 5.572355363451327, 0.2929086754687712, 0.3194705829972679, 174.1256365745945, 32.60832631814468, 0.1364066424652067, 0.08589788532369, "2025-11-06T18:14:42.420", 0.4200336573436658, 0.32, "[4.0, 8.0]", 1]}, {"x": 9.63727900164833, "y": 191.7136783400537, "snr": 218.9854766754661, "count": 5, "dt": 1.4000336224004428, "custom": ["007461_SYC_detection_12.html", 12, 218.9854766754661, 0.2729011071336779, 0.2439275203349977, 89.28718528510335, 23.27743425738094, 0.0946949656649479, 0.0609372944060527, "2025-11-06T18:14:43.400", 1.4000336224004428, 0.64, "[4.0, 8.0]", 5]}, {"x": 189.59181567033215, "y": 190.79837751096755, "snr": 9.792287543702283, "count": 1, "dt": 1.1200336323842208, "custom": ["007461_SYC_detection_13.html", 13, 9.792287543702283, 0.1828921792876413, 0.3400307315769842, 162.7021107723257, 23.767932746748112, 0.1107541153287931, 0.0478105460123293, "2025-11-06T18:14:43.120", 1.1200336323842208, 0.64, "[4.0, 8.0]", 1]}, {"x": 8.632464486628653, "y": 7.955036345821446, "snr": 238.9984103931707, "count": 5, "dt": 6.0000338176056545, "custom": ["007461_SYC_detection_14.html", 14, 238.9984103931707, 0.4219309485269804, 0.2928152607378886, 5.951804581476684, 50.07704252428434, 0.2046312527733817, 0.0720163445410772, "2025-11-06T18:14:48.000", 6.0000338176056545, 0.32, "[8.0, 120.0]", 5]}, {"x": 6.401770438920519, "y": 13.549571056044694, "snr": 7.528443818925111, "count": 2, "dt": 6.4200338026299875, "custom": ["007461_SYC_detection_15.html", 15, 7.528443818925111, 0.1907153662228433, 0.4483823574794192, 9.069876416893024, 49.80375562184329, 0.1417786141212804, 0.1091872244567686, "2025-11-06T18:14:48.420", 6.4200338026299875, 0.64, "[8.0, 120.0]", 2]}, {"x": 7.519155224648516, "y": 188.624460025574, "snr": 542.0998017049484, "count": 2, "dt": 1.8600335161924164, "custom": ["007461_SYC_detection_16.html", 16, 542.0998017049484, 0.4176297216927823, 0.0771083815759373, 87.96952988527461, 23.745688510746565, 0.0955235818476038, 0.088249820422242, "2025-11-06T18:14:43.860", 1.8600335161924164, 1.28, "[4.0, 8.0]", 2]}, {"x": 189.96227946676197, "y": 187.0643273169289, "snr": 10.85740979057782, "count": 1, "dt": 2.680033846178631, "custom": ["007461_SYC_detection_17.html", 17, 10.85740979057782, 1.017765795816705, 0.2181370216123108, 163.63490630873903, 24.534021627488325, 0.2362475582539032, 0.2195364926758581, "2025-11-06T18:14:44.680", 2.680033846178631, 0.32, "[4.0, 8.0]", 1]}, {"x": 3.874376324217039, "y": 188.09347614676, "snr": 36.049371482136245, "count": 5, "dt": 6.580034066343288, "custom": ["007461_SYC_detection_18.html", 18, 36.049371482136245, 0.2181103074494462, 0.2057595949342987, 86.76501754752951, 23.53289508428371, 0.0778787007404692, 0.0485454400675225, "2025-11-06T18:14:48.580", 6.580034066343288, 0.64, "[4.0, 20.0]", 5]}, {"x": 191.74595116678705, "y": 176.6218977748932, "snr": 6.286461416530405, "count": 2, "dt": 6.380033893862347, "custom": ["007461_SYC_detection_19.html", 19, 6.286461416530405, 0.1502737660363916, 0.214846232093825, 166.65278747875251, 26.65594052572977, 0.0758119552274402, 0.0403743648656246, "2025-11-06T18:14:48.380", 6.380033893862347, 0.32, "[8.0, 120.0]", 2]}, {"x": 7.35505098217328, "y": 12.985862433780298, "snr": 10.29927076510605, "count": 1, "dt": 6.74003370141385, "custom": ["007461_SYC_detection_20.html", 20, 10.29927076510605, 0.2398134391126138, 0.1581144420970899, 8.57151702123463, 50.0118623448484, 0.1179361325946357, 0.0397106769920759, "2025-11-06T18:14:48.740", 6.74003370141385, 0.32, "[8.0, 120.0]", 1]}, {"x": 133.5142972768941, "y": 5.601387923433964, "snr": 28.53907920313797, "count": 1, "dt": 6.80003387888668, "custom": ["007461_SYC_detection_21.html", 21, 28.53907920313797, 1.770469875473034, 0.1537862284852802, 274.0631374046158, 63.20742298435479, 0.8142882527588764, 0.4058416891455874, "2025-11-06T18:14:48.800", 6.80003387888668, 0.16, "[8.0, 50.0]", 1]}, {"x": 41.500006296444624, "y": 5.249419500669284, "snr": 6.0471872067808246, "count": 1, "dt": 7.720033666470627, "custom": ["007461_SYC_detection_22.html", 22, 6.0471872067808246, 0.8927060898642778, 0.0344022626207674, 352.52490408294244, 57.70976742824595, 0.4416979107964031, 0.1269542019485715, "2025-11-06T18:14:49.720", 7.720033666470627, 0.02, "[4.0, 8.0]", 1]}];
+
+const snrLevels=[4.0, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 6.0, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8, 6.9, 7.0, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.9, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 9.0, 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9, 10.0];
+
+const countLevels=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+const dtMinAllowed=-2.100000262260437;
+
+const dtMaxAllowed=8.099999785423279;
+
+const gd=document.getElementById("plot");
+
+let snrIndex=0;
+let countIndex=0;
+
+let dtRange=[dtMinAllowed,dtMaxAllowed];
+
+const dtSlider=document.getElementById("dtSlider");
+
+noUiSlider.create(dtSlider,{
+    start:[dtMinAllowed,dtMaxAllowed],
+    connect:true,
+    step:0.1,
+    range:{
+        min:dtMinAllowed,
+        max:dtMaxAllowed
+    },
+    tooltips:[true,true],
+    format:{
+        to:function(v){return Number(v).toFixed(1);},
+        from:function(v){return Number(v);}
+    }
+});
+
+dtSlider.style.position="relative";
+
+function addMarker(value,color,label){
+
+    if(value<dtMinAllowed || value>dtMaxAllowed)
+        return;
+
+    const pct=
+        100*(value-dtMinAllowed)/(dtMaxAllowed-dtMinAllowed);
+
+    const line=document.createElement("div");
+
+    line.style.position="absolute";
+    line.style.left=pct+"%";
+    line.style.top="-10px";
+    line.style.bottom="-10px";
+    line.style.width="2px";
+    line.style.background=color;
+    line.style.pointerEvents="none";
+
+    const text=document.createElement("div");
+
+    text.innerHTML=label;
+
+    text.style.position="absolute";
+    text.style.top="-18px";
+    text.style.left="50%";
+    text.style.transform="translateX(-50%)";
+    text.style.fontSize="10px";
+    text.style.whiteSpace="nowrap";
+
+    line.appendChild(text);
+
+    dtSlider.appendChild(line);
+}
+
+addMarker(0,"red","0");
+
+addMarker(1.02,"blue","max SNR");
+
+function updatePlot(){
+
+    document.getElementById("snrValue").textContent=
+        snrLevels[snrIndex].toFixed(1);
+
+    document.getElementById("countValue").textContent=
+        countLevels[countIndex];
+
+    document.getElementById("dtMin").textContent=
+        dtRange[0].toFixed(1);
+
+    document.getElementById("dtMax").textContent=
+        dtRange[1].toFixed(1);
+
+    const x=[];
+    const y=[];
+    const custom=[];
+
+    for(const p of data){
+
+        if(
+            p.snr>=snrLevels[snrIndex] &&
+            p.count>=countLevels[countIndex] &&
+            p.dt>=dtRange[0] &&
+            p.dt<=dtRange[1]
+        ){
+
+            x.push(p.x);
+            y.push(p.y);
+            custom.push(p.custom);
+
+        }
+
+    }
+
+    Plotly.restyle(
+        gd,
+        {
+            x:[x],
+            y:[y],
+            customdata:[custom]
+        },
+        [1]
+    );
+
+}
+
+document.getElementById("snrSlider").oninput=function(){
+    snrIndex=parseInt(this.value);
+    updatePlot();
+};
+
+document.getElementById("countSlider").oninput=function(){
+    countIndex=parseInt(this.value);
+    updatePlot();
+};
+
+dtSlider.noUiSlider.on("update",function(values){
+
+    dtRange=[
+        parseFloat(values[0]),
+        parseFloat(values[1])
+    ];
+
+    updatePlot();
+
+});
+
+gd.on("plotly_click",function(d){
+
+    if(d.points.length &&
+       d.points[0].curveNumber===1){
+
+        window.open(
+            d.points[0].customdata[0],
+            "_blank"
+        );
+
+    }
+
+});
+
+updatePlot();
+
+</script>
+
+</body>
+</html>
